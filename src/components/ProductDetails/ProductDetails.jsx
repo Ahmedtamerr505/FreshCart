@@ -3,9 +3,14 @@ import style from "./ProductDetails.module.css"
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import Slider from "react-slick";
+import { CartContext } from '../../Context/CartContext';
+import toast from 'react-hot-toast';
 
 export default function ProductDetails() {
   const [product, setproduct] = useState(null)
+  let{addProduct ,setnumberItems ,numberItems}=useContext(CartContext) 
+  const [load, setload] = useState(false)
+  const [productID, setproductID] = useState(null)
   let {id} =useParams()
   
   var settings = {
@@ -16,6 +21,22 @@ export default function ProductDetails() {
     slidesToScroll: 1,
   };
 
+  async function getProductToCartt(prodid){
+    setproductID(prodid)
+    setload(true)
+    let resp = await addProduct(prodid)
+    console.log(resp);
+    if(resp.data.status === 'success'){
+      setnumberItems(numberItems +1)
+      setload(false);
+      toast.success(resp.data.message);
+    }
+    else{
+      setload(false);
+      toast.error(resp.data.message);
+    }
+    
+  }
   function getProduct(id){
     axios.get(`https://ecommerce.routemisr.com/api/v1/products/${id}`)
     .then((res)=>{
@@ -44,7 +65,8 @@ export default function ProductDetails() {
       <span>{product?.price}EGP</span>
       <span><i className='fas fa-star text-yellow-400'></i> {product?.ratingsAverage}</span>
     </div>
-    <button className='btn'>+ Add </button>
+    <button onClick={()=>{getProductToCartt(product.id)}} className='btn'>
+    {load && productID == product.id ?  <i className='fas fa-spinner fa-spin text-white'></i> : '+ Add'} </button>
     </div>
 
   </div>

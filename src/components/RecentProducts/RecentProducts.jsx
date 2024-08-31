@@ -75,9 +75,9 @@ const [productID, setproductID] = useState(null)
       
       {load && productID == product.id ?  <i className='fas fa-spinner fa-spin text-white'></i> : '+ Add'}</button>
 
-      
+      <i onClick={()=>{getProductToWish(product.id)}}  className='fas fa-heart text-black ps-1 text-2xl cursor-pointer focus:text-red-600'></i>
   </div>
-  <i onClick={()=>{getProductToWish(product.id)}}  className='fas fa-heart text-black ps-1 text-2xl cursor-pointer focus:text-red-600'></i>
+  
 
 </div>) : <div class="sk-chase">
   <div class="sk-chase-dot"></div>

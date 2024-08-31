@@ -30,10 +30,10 @@ let x = createBrowserRouter([
     {path: "wishlist",element:<ProtectedRoute><WishList/></ProtectedRoute>},
     {path: "checkout",element:<ProtectedRoute><CheckOut/></ProtectedRoute>},
     {path: "productdetails/:id",element:<ProtectedRoute><ProductDetails/></ProtectedRoute>},
-    {path: "categorydetails/:id",element:<ProtectedRoute><CategoryDetails/></ProtectedRoute>},
     {path: "register",element:<Register/>},
     {path: "login",element:<Login/>},
     {path: "categories",element:<ProtectedRoute><Categories/></ProtectedRoute>},
+    {path: "categorydetails/:id",element:<ProtectedRoute><CategoryDetails/></ProtectedRoute>},
     {path: "*",element:<Notfound/>},
   ]}
 ])
