@@ -1,0 +1,55 @@
+import axios from "axios";
+import { createContext } from "react";
+
+export let CartContext = createContext(0)
+
+export default function CartContextProvider(props){
+
+    let headers = {
+        token:localStorage.getItem("userToken")
+    }
+    function getLoggedCart(){
+        return axios.get(`https://ecommerce.routemisr.com/api/v1/cart`, {
+            headers
+        })
+        .then((res)=>res)
+        .catch((error)=>error)
+    }
+    function addProduct(prodid){
+        return axios.post(`https://ecommerce.routemisr.com/api/v1/cart`,{
+            productId: prodid
+        },{
+            headers
+        })
+        .then((res)=>res)
+        .catch((err)=>err)
+    }
+    function updateProduct(prodid , count){
+        return axios.put(`https://ecommerce.routemisr.com/api/v1/cart/${prodid}`,{
+            count: count
+        },{
+            headers
+        })
+        .then((res)=>res)
+        .catch((err)=>err)
+    }
+    function deleteProduct(prodid){
+        return axios.delete(`https://ecommerce.routemisr.com/api/v1/cart/${prodid}`,{
+            headers
+        })
+        .then((res)=>res)
+        .catch((err)=>err)
+    }
+    function checkoutCart(cartId , url , formvl){
+        return axios.post(`https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${cartId}?url=${url}`,{
+            shippingAddress: formvl
+        },{
+            headers
+        })
+        .then((res)=>res)
+        .catch((err)=>err)
+    }
+    return <CartContext.Provider value={{getLoggedCart,addProduct,updateProduct,deleteProduct,checkoutCart}}>
+        {props.children}
+    </CartContext.Provider>
+}
