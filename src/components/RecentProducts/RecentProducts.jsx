@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 import { WishContext } from '../../Context/WishContext'
 
 export default function RecentProducts() {
-  let{addProduct}=useContext(CartContext) 
+  let{addProduct ,setnumberItems ,numberItems}=useContext(CartContext) 
   let {addProductt} = useContext(WishContext)
 const [products, setproducts] = useState([])
 const [load, setload] = useState(false)
@@ -27,6 +27,7 @@ const [productID, setproductID] = useState(null)
     let resp = await addProduct(prodid)
     console.log(resp);
     if(resp.data.status === 'success'){
+      setnumberItems(numberItems +1)
       setload(false);
       toast.success(resp.data.message);
     }

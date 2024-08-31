@@ -3,12 +3,14 @@ import style from "./Navbar.module.css"
 import logo from "../../assets/freshcart-logo.svg"
 import { Link, useNavigate } from 'react-router-dom'
 import { UserContext } from '../../Context/UserContext'
+import { CartContext } from '../../Context/CartContext'
 
 
 export default function Navbar() {
   
   let {userLogin , setuserLogin} = useContext(UserContext)
   let navigate = useNavigate()
+  let {numberItems} = useContext(CartContext)
 
   function signOut(){
     localStorage.removeItem("userToken");
@@ -28,7 +30,11 @@ export default function Navbar() {
         <>
         <ul className='flex gap-4'>
               <li><Link to="">Home</Link></li>
-              <li><Link to="cart">Cart</Link></li>
+              <li><Link to="cart">
+              Cart <div className='absolute top-[-13px] right-[-13px] size-5 p-1 bg-emerald-600 text-white rounded-full flex items-center justify-center '>
+              {numberItems}
+              </div>
+              </Link></li>
               <li><Link to="products">Products</Link></li>
               <li><Link to="wishlist">Wish List</Link></li>
               <li><Link to="categories">Categories</Link></li>

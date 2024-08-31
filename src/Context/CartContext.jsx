@@ -9,12 +9,14 @@ export default function CartContextProvider(props){
         token:localStorage.getItem("userToken")
     }
     const [cartid, setcartid] = useState(0)
+    const [numberItems, setnumberItems] = useState(0)
     function getLoggedCart(){
         return axios.get(`https://ecommerce.routemisr.com/api/v1/cart`, {
             headers
         })
         .then((res)=>{
             console.log(res.data.numOfCartItems);
+            setnumberItems(res.data.numOfCartItems);
             setcartid(res.data._id)
             return res
         })
@@ -54,7 +56,7 @@ export default function CartContextProvider(props){
         .then((res)=>res)
         .catch((err)=>err)
     }
-    return <CartContext.Provider value={{getLoggedCart,addProduct,updateProduct,deleteProduct,checkoutCart,cartid,setcartid}}>
+    return <CartContext.Provider value={{getLoggedCart,addProduct,updateProduct,deleteProduct,checkoutCart,cartid,setcartid,setnumberItems,numberItems}}>
         {props.children}
     </CartContext.Provider>
 }
