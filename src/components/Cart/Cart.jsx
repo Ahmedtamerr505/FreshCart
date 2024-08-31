@@ -4,6 +4,7 @@ import { CartContext } from '../../Context/CartContext'
 import Products from './../Products/Products';
 import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import axios from 'axios';
 
 export default function Cart() {
   const [cartitems, setcartitems] = useState(null)
@@ -35,6 +36,15 @@ export default function Cart() {
     updateCartProduct()
 
   })
+  async function clearCart() {
+    let {data} = await axios.delete("https://ecommerce.routemisr.com/api/v1/cart",{
+      headers:{
+        token : localStorage.getItem("token")
+      }
+    })
+
+    setcartitems(null)
+  }
   return <>
 <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
   <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -98,7 +108,7 @@ export default function Cart() {
 </div>
 <br />
 <div className='flex justify-between'>
-<button className='text-red-500 border-2 border-red-500 rounded-md px-4 py-2 hover:text-white hover:bg-red-500'>Clear cart</button>
+<button onClick={clearCart} className='text-red-500 border-2 border-red-500 rounded-md px-4 py-2 hover:text-white hover:bg-red-500'>Clear cart</button>
 <Link to={'/checkout'} className=' text-emerald-500 border-2 border-emerald-500 rounded-md px-4 py-2 hover:text-white hover:bg-emerald-500'>Check Out</Link>
 
 </div>
