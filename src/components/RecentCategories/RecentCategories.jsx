@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import style from "./RecentCategories.module.css"
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 export default function RecentCategories() {
   const [categorys, setcategorys] = useState([])
@@ -24,10 +25,13 @@ export default function RecentCategories() {
   <h1 className='text-center text-emerald-500 text-3xl font-bold'>All Categories</h1>
   <div className='row'>
     {categorys.length > 0 ? categorys.map((category)=>     <div key={category.id} className='w-1/4 p-2'>
+    <Link to={`categorydetails/${category.id}`}>
     <div className='pb-3 hvr rounded-lg'>
     <img src={category.image} alt="" className='h-60 w-full object-cover'/>
     <h3 className='text-center p-4'>{category.name}</h3>
     </div>
+    </Link>
+
     
 
     </div>) : <div class="sk-chase">

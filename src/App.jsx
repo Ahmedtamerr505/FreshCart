@@ -19,6 +19,7 @@ import { Toaster } from 'react-hot-toast';
 import WishList from './components/WishList/WishList';
 import WishContextProvider from './Context/WishContext';
 import CheckOut from './components/CheckOut/CheckOut';
+import CategoryDetails from './components/CategoryDetails/CategoryDetails';
 
 let x = createBrowserRouter([
   {path:"",element: <Layout/>,children:[
@@ -29,6 +30,7 @@ let x = createBrowserRouter([
     {path: "wishlist",element:<ProtectedRoute><WishList/></ProtectedRoute>},
     {path: "checkout",element:<ProtectedRoute><CheckOut/></ProtectedRoute>},
     {path: "productdetails/:id",element:<ProtectedRoute><ProductDetails/></ProtectedRoute>},
+    {path: "categorydetails/:id",element:<ProtectedRoute><CategoryDetails/></ProtectedRoute>},
     {path: "register",element:<Register/>},
     {path: "login",element:<Login/>},
     {path: "categories",element:<ProtectedRoute><Categories/></ProtectedRoute>},
