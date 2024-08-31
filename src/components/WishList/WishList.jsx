@@ -27,7 +27,7 @@ export default function WishList() {
       <table className='w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400'>
         <h1 className='text-start text-2xl text-gray-800 font-semibold p-8'>Wish List</h1>
         <tbody>
-          {wishitem?.data.map((product)=>       <tr key={product.id} className='bg-white border-b dark:bg-emerald-800 dark:border-gray-700 hover:bg-orange-400 dark:hover:bg-emerald-600"'>
+          {wishitem?.data.map((product)=>       <tr key={product.id} className='bg-white border-b dark:bg-emerald-800 dark:border-gray-700 hover:bg-amber-500 dark:hover:bg-emerald-600"'>
           <td className="p-4">
           <img src={product.imageCover} className="w-16 md:w-32 max-w-full max-h-full"  />
           </td>
