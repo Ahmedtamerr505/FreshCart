@@ -34,7 +34,7 @@ export default function WishList() {
           <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
           <h2 className='text-start text-xl'>{product.category.name}</h2>
           <h3 className='text-start text-black'>{product.price} EGP</h3>
-          <span onClick={()=>{deleteWishProduct(product.id)}} className="font-medium cursor-pointer text-red-600 dark:text-red-500 hover:underline">Remove</span>
+          <span onClick={()=>{deleteWishProduct(product.id)}} className="font-medium text-lg cursor-pointer text-red-600 dark:text-red-500 hover:text-red-800"><i class="text-red-600 fa-solid fa-trash hover:text-red-800"></i> Remove</span>
           </td>
 
           </tr>) }
