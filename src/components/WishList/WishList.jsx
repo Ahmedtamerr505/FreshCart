@@ -23,7 +23,7 @@ export default function WishList() {
   })
   return <>
   
-    <div className='mt-14 bg-gray-400 relative overflow-x-auto shadow-md sm:rounded-lg'>
+    <div className='mt-14 bg-lime-700 relative overflow-x-auto shadow-md sm:rounded-lg'>
       <table className='w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400'>
         <h1 className='text-start text-2xl text-gray-800 font-semibold p-8'>Wish List</h1>
         <tbody>
