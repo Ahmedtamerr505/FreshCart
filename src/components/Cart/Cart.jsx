@@ -99,7 +99,7 @@ export default function Cart() {
 <br />
 <div className='flex justify-between'>
 <button className='text-red-500 border-2 border-red-500 rounded-md px-4 py-2 hover:text-white hover:bg-red-500'>Clear cart</button>
-<Link to={'/checkout'} className=' bg-emerald-600 hover:bg-emerald-400  focus:ring-4 focus:outline-none focus:ring-emerald-200 font-medium rounded-lg text-sm w-full sm:w-auto px-4 py-2 text-center'>Check Out</Link>
+<Link to={'/checkout'} className=' text-emerald-500 border-2 border-emerald-500 rounded-md px-4 py-2 hover:text-white hover:bg-emerald-500'>Check Out</Link>
 
 </div>
 
