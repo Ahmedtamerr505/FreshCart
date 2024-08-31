@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createContext } from "react";
+import { createContext, useState } from "react";
 
 export let CartContext = createContext(0)
 
@@ -8,11 +8,15 @@ export default function CartContextProvider(props){
     let headers = {
         token:localStorage.getItem("userToken")
     }
+    const [cartid, setcartid] = useState(0)
     function getLoggedCart(){
         return axios.get(`https://ecommerce.routemisr.com/api/v1/cart`, {
             headers
         })
-        .then((res)=>res)
+        .then((res)=>{
+            console.log(res.data);
+            setcartid(res.data.data._id)
+        })
         .catch((error)=>error)
     }
     function addProduct(prodid){
