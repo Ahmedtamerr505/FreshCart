@@ -54,7 +54,7 @@ export default function CartContextProvider(props){
         .then((res)=>res)
         .catch((err)=>err)
     }
-    return <CartContext.Provider value={{getLoggedCart,addProduct,updateProduct,deleteProduct,checkoutCart}}>
+    return <CartContext.Provider value={{getLoggedCart,addProduct,updateProduct,deleteProduct,checkoutCart,cartid,setcartid}}>
         {props.children}
     </CartContext.Provider>
 }
