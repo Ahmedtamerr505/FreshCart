@@ -37,6 +37,9 @@ export default function WishList() {
 
           <span onClick={()=>{deleteWishProduct(product.id)}} className="font-medium text-md cursor-pointer text-red-600 dark:text-red-500 hover:text-red-800"><i class=" fa-solid fa-trash "></i> Remove</span>
           </td>
+          <td className="p-4">
+          <button className='text-emerald-500 border-2 border-emerald-500 rounded-md px-4 py-2 hover:text-white hover:bg-emerald-500'>Add to cart</button>
+          </td>
 
           </tr>) }
 
