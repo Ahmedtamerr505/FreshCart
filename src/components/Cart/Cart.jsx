@@ -3,10 +3,11 @@ import style from "./Cart.module.css"
 import { CartContext } from '../../Context/CartContext'
 import Products from './../Products/Products';
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 export default function Cart() {
   const [cartitems, setcartitems] = useState(null)
-  let {getLoggedCart , updateProduct,deleteProduct} = useContext(CartContext)
+  let {getLoggedCart , updateProduct,deleteProduct,numberItems, setnumberItems} = useContext(CartContext)
 
   async function getCartItems() {
     let respon = await getLoggedCart()
@@ -20,7 +21,12 @@ export default function Cart() {
   }
   async function deleteCartProduct(prodid) {
     let respon = await deleteProduct(prodid)
-    setcartitems(respon.data.data);
+    if(respon.data.status == 'success'){
+      setnumberItems(numberItems -1);
+      setcartitems(respon.data.data);
+      toast.success("Product removed successfully")
+    }
+   
  
   }
   useEffect(()=>{
