@@ -1,10 +1,16 @@
 import React, { useContext,useEffect, useState } from 'react'
 import style from "./WishList.module.css"
 import { WishContext } from '../../Context/WishContext'
+import { CartContext } from '../../Context/CartContext'
+import toast from 'react-hot-toast'
 
 export default function WishList() {
   const [wishitem, setwishitem] = useState(null)
   let {getLoggedWish ,deleteProductt} = useContext(WishContext)
+  let{addProduct ,setnumberItems ,numberItems}=useContext(CartContext) 
+  const [load, setload] = useState(false)
+  const [productID, setproductID] = useState(null)
+  
   
   async function getWishItems() {
     let respon = await getLoggedWish()
@@ -21,6 +27,22 @@ export default function WishList() {
     deleteWishProduct()
 
   })
+  async function getProductToCarttt(prodid){
+    setproductID(prodid)
+    setload(true)
+    let resp = await addProduct(prodid)
+    console.log(resp);
+    if(resp.data.status === 'success'){
+      setnumberItems(numberItems +1)
+      setload(false);
+      toast.success(resp.data.message);
+    }
+    else{
+      setload(false);
+      toast.error(resp.data.message);
+    }
+    
+  }
   return <>
   
     <div className='mt-14 bg-lime-700 relative overflow-x-auto shadow-md sm:rounded-lg'>
@@ -38,7 +60,8 @@ export default function WishList() {
           <span onClick={()=>{deleteWishProduct(product.id)}} className="font-medium text-md cursor-pointer text-red-600 dark:text-red-500 hover:text-red-800"><i class=" fa-solid fa-trash "></i> Remove</span>
           </td>
           <td className="p-4">
-          <button className='text-yellow-500 border-2 border-yellow-500 rounded-md px-4 py-2 hover:text-white hover:bg-yellow-500'>Add to cart</button>
+          <button onClick={()=>{getProductToCarttt(product.id)}} className='text-yellow-600 border-2 border-yellow-600 rounded-md px-4 py-2 hover:text-white hover:bg-yellow-600'>
+          {load && productID == product.id ?  <i className='fas fa-spinner fa-spin text-white'></i> : 'Add to cart'}</button>
           </td>
 
           </tr>) }
