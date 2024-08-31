@@ -12,7 +12,7 @@ export default function CategoryDetails() {
     axios.get(`https://ecommerce.routemisr.com/api/v1/categories/${id}`)
     .then((res)=>{
       console.log(res);
-      
+      setcategor(res)
     })
     .catch((res)=>{
       res
