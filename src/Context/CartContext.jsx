@@ -14,7 +14,7 @@ export default function CartContextProvider(props){
             headers
         })
         .then((res)=>{
-            console.log(res.data);
+            console.log(res.data.numOfCartItems);
             setcartid(res.data._id)
             return res
         })
