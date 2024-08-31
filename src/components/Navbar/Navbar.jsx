@@ -31,9 +31,7 @@ export default function Navbar() {
         <ul className='flex gap-4'>
               <li><Link to="">Home</Link></li>
               <li><Link to="cart">
-              Cart <div className='absolute top-[-13px] right-[-13px] size-5 p-1 bg-emerald-600 text-white rounded-full flex items-center justify-center '>
-              {numberItems}
-              </div>
+              Cart  {numberItems}
               </Link></li>
               <li><Link to="products">Products</Link></li>
               <li><Link to="wishlist">Wish List</Link></li>
