@@ -60,7 +60,7 @@ export default function WishList() {
           <span onClick={()=>{deleteWishProduct(product.id)}} className="font-medium text-md cursor-pointer text-red-600 dark:text-red-500 hover:text-red-800"><i class=" fa-solid fa-trash "></i> Remove</span>
           </td>
           <td className="p-4">
-          <button onClick={()=>{getProductToCarttt(product.id)}} className='text-yellow-600 border-2 border-yellow-600 rounded-md px-4 py-2 hover:text-white hover:bg-yellow-600'>
+          <button onClick={()=>{getProductToCarttt(product.id)}} className='text-yellow-500 border-2 border-yellow-500 rounded-md px-4 py-2 hover:text-white hover:bg-yellow-500'>
           {load && productID == product.id ?  <i className='fas fa-spinner fa-spin text-white'></i> : 'Add to cart'}</button>
           </td>
 
