@@ -15,7 +15,7 @@ export default function CartContextProvider(props){
             headers
         })
         .then((res)=>{
-            console.log(res.data.numOfCartItems);
+            // console.log(res.data.numOfCartItems);
             setnumberItems(res.data.numOfCartItems);
             setcartid(res.data._id)
             return res
@@ -56,7 +56,16 @@ export default function CartContextProvider(props){
         .then((res)=>res)
         .catch((err)=>err)
     }
-    return <CartContext.Provider value={{getLoggedCart,addProduct,updateProduct,deleteProduct,checkoutCart,cartid,setcartid,setnumberItems,numberItems}}>
+    function clearCart() {
+        return axios.delete("https://ecommerce.routemisr.com/api/v1/cart",{
+          headers
+        })
+        .then((res)=>{
+            console.log(res);
+            setcartid(res)
+        })
+      }
+    return <CartContext.Provider value={{getLoggedCart,addProduct,updateProduct,deleteProduct,checkoutCart,cartid,setcartid,setnumberItems,numberItems,clearCart}}>
         {props.children}
     </CartContext.Provider>
 }
