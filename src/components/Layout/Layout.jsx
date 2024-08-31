@@ -10,7 +10,7 @@ export default function Layout() {
   <div className='container mx-auto py-10'>
     <Outlet/>
   </div>
-  <Footer/>
+  
   </>
     
   
