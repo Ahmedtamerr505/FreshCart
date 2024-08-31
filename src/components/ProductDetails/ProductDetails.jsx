@@ -5,6 +5,7 @@ import axios from 'axios'
 import Slider from "react-slick";
 import { CartContext } from '../../Context/CartContext';
 import toast from 'react-hot-toast';
+import { useContext } from 'react';
 
 export default function ProductDetails() {
   const [product, setproduct] = useState(null)
