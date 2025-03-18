@@ -1,11 +1,11 @@
-import React from 'react'
-import style from "./Products.module.css"
-import RecentProducts from '../RecentProducts/RecentProducts'
+import React from 'react';
+import RecentProducts from '../RecentProducts/RecentProducts';
 
 export default function Products() {
-  return <>
-  <RecentProducts/>
-  </>
-    
-  
+  return (
+    <>
+      {/* Render the RecentProducts component */}
+      <RecentProducts />
+    </>
+  );
 }

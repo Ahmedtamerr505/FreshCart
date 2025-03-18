@@ -12,7 +12,7 @@ export default function ProductDetails() {
   let{addProduct ,setnumberItems ,numberItems}=useContext(CartContext) 
   const [load, setload] = useState(false)
   const [productID, setproductID] = useState(null)
-  let {id} =useParams()
+  const {id} =useParams()
   
   var settings = {
     dots: true,
