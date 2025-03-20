@@ -75,7 +75,7 @@ export default function RecentProducts() {
             <div key={product.id} className="p-3">
               <div className="product bg-white shadow-lg rounded-lg overflow-hidden p-2 transform transition duration-300 hover:scale-105 hover:shadow-emerald-500/50">
                 {/* Navigate to Product Details */}
-                <Link to={`productdetails/${product.id}`}>
+                <Link to={`/productdetails/${product.id}`}>
                   <img
                     src={product.imageCover}
                     className="w-full"
