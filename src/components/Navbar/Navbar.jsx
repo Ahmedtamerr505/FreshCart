@@ -127,41 +127,41 @@ export default function Navbar() {
           </div>
 
           {/* Cart Icon and SignOut */}
-          <div className="flex items-center space-x-4">
-            <NavLink
-              to="cart"
-              className={({ isActive }) =>
-                isActive
-                  ? 'text-emerald-600 font-bold transition duration-200'
-                  : 'hover:text-emerald-600 transition duration-200'
-              }
-            >
-              <div className="relative flex items-center">
-                <i className="fas fa-shopping-cart text-2xl"></i>
-                {numberItems > 0 && (
-                  <div className="bg-emerald-600 text-white text-xs absolute top-[-5px] right-[-10px] rounded-full h-5 w-5 flex items-center justify-center shadow-md border-2 border-white">
-                    {numberItems}
-                  </div>
-                )}
-              </div>
-            </NavLink>
-            {userLogin != null && (
+          {userLogin != null && (
+            <div className="flex items-center space-x-4">
+              <NavLink
+                to="cart"
+                className={({ isActive }) =>
+                  isActive
+                    ? 'text-emerald-600 font-bold transition duration-200'
+                    : 'hover:text-emerald-600 transition duration-200'
+                }
+              >
+                <div className="relative flex items-center">
+                  <i className="fas fa-shopping-cart text-2xl"></i>
+                  {numberItems > 0 && (
+                    <div className="bg-emerald-600 text-white text-xs absolute top-[-5px] right-[-10px] rounded-full h-5 w-5 flex items-center justify-center shadow-md border-2 border-white">
+                      {numberItems}
+                    </div>
+                  )}
+                </div>
+              </NavLink>
               <span
                 onClick={signOut}
                 className="hidden md:inline-block text-sm cursor-pointer hover:text-red-600 transition duration-200"
               >
                 SignOut
               </span>
-            )}
+            </div>
+          )}
 
-            {/* Hamburger Menu Button */}
-            <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="text-gray-700 text-2xl md:hidden focus:outline-none"
-            >
-              <i className="fas fa-bars"></i>
-            </button>
-          </div>
+          {/* Hamburger Menu Button */}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="text-gray-700 text-2xl md:hidden focus:outline-none"
+          >
+            <i className="fas fa-bars"></i>
+          </button>
         </div>
       </nav>
     </>

@@ -11,22 +11,42 @@ export default function CheckOut() {
       details: "",
       city: "",
     },
+    validate: (values) => {
+      const errors = {};
+      if (!values.phone) {
+        errors.phone = "Phone number is required";
+      } else if (!/^\d{10}$/.test(values.phone)) {
+        errors.phone = "Phone number must be 10 digits";
+      }
+      if (!values.details) {
+        errors.details = "Details are required";
+      }
+      if (!values.city) {
+        errors.city = "City is required";
+      }
+      return errors;
+    },
     onSubmit: () => {
-      handleCheckout('66b10e95ed0dc0016c0293a0', 'http://localhost:5173'); // Replace with your actual cart ID and redirect URL
+      handleCheckout('66b10e95ed0dc0016c0293a0', 'http://localhost:5173'); // Replace with dynamic values
     },
   });
 
   async function handleCheckout(cartId, url) {
     try {
+      console.log('Submitting checkout request...');
       let resppo = await checkoutCart(cartId, url, formik.values);
+      console.log('Response:', resppo);
+
       if (resppo.data.status === 'success') {
-        // Redirect to the payment page
-        window.location.href = resppo.data.session.url;
+        console.log('Redirecting to:', resppo.data.session.url);
+        window.location.href = resppo.data.session.url; // Redirect to payment page
       } else {
         console.error('Checkout failed:', resppo.data.message);
+        alert('Checkout failed. Please try again.');
       }
     } catch (error) {
       console.error('Checkout failed:', error);
+      alert('An error occurred during checkout. Please try again.');
     }
   }
 
