@@ -35,7 +35,7 @@ FreshCart is a modern, full-featured e-commerce web application built with **Rea
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/freshcart.git
+   git clone https://github.com/Ahmedtamerr505/FreshCart.git
    cd freshcart
 
 2. **Install dependencies:**
@@ -55,7 +55,6 @@ FreshCart is a modern, full-featured e-commerce web application built with **Rea
 You can try the app live here:  
 [https://fresh-cart-one-eta.vercel.app/](https://fresh-cart-one-eta.vercel.app/)
 
----
 
 ### 📁 Project Structure
 src/
@@ -79,7 +78,6 @@ src/
   App.jsx
   main.jsx
 
----
 
 ### ⚙️ Customization
 
@@ -89,12 +87,10 @@ src/
 - **Styling:**  
   Tailwind CSS is used for styling. You can customize the theme in `tailwind.config.js`.
 
----
 
 ### 🤝 Contributing
 Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
 
----
 
 ### 📄 License
 This project is licensed under the MIT License.
