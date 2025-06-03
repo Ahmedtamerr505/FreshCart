@@ -50,13 +50,13 @@ FreshCart is a modern, full-featured e-commerce web application built with **Rea
    # or
    yarn dev
 
-### 🌐 Live Demo
+## 🌐 Live Demo
 
 You can try the app live here:  
 [https://fresh-cart-one-eta.vercel.app/](https://fresh-cart-one-eta.vercel.app/)
 
 
-### 📁 Project Structure
+## 📁 Project Structure
 src/
   components/
     Cart/
@@ -79,7 +79,7 @@ src/
   main.jsx
 
 
-### ⚙️ Customization
+## ⚙️ Customization
 
 - **API Integration:**  
   The app is integrated with a RESTful e-commerce API. You can update the API endpoints in the relevant context files.
@@ -88,11 +88,11 @@ src/
   Tailwind CSS is used for styling. You can customize the theme in `tailwind.config.js`.
 
 
-### 🤝 Contributing
+## 🤝 Contributing
 Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
 
 
-### 📄 License
+## 📄 License
 This project is licensed under the MIT License.
 
 ---
