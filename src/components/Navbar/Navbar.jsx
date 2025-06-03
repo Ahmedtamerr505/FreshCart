@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react';
-import style from './Navbar.module.css';
 import logo from '../../assets/freshcart-logo.svg';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../Context/UserContext';

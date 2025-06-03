@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import style from './RecentBrands.module.css';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
