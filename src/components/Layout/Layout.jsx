@@ -10,8 +10,7 @@ export default function Layout() {
       <div className="flex flex-col min-h-screen">
         <Navbar />
 
-        {/* This flex-grow pushes the footer down even if content is short */}
-        <main className="flex-grow container mx-auto px-4 mt-20">
+        <main className="flex-grow container mx-auto px-6 mt-20">
           <Outlet />
         </main>
 
