@@ -7,31 +7,35 @@ import slide5 from "../../assets/grocery-banner.png";
 import Slider from "react-slick";
 
 export default function MainSlider() {
-  var settings = {
-    dots: false,
+  const settings = {
+    dots: true,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
+    arrows: false, 
   };
 
   return (
-    <>
-      <div className="row my-5 mb-5">
-        <div className="w-3/4">
+    <div className="container mx-auto my-8 px-4">
+      <div className="flex flex-col md:flex-row">
+        {/* Main Slider Section */}
+        <div className="w-full md:w-3/4">
           <Slider {...settings}>
-            <img src={slide1} className="w-full h-[400px] object-cover" alt="" />
-            <img src={slide4} className="w-full h-[400px] object-cover" alt="" />
-            <img src={slide5} className="w-full h-[400px] object-cover" alt="" />
+            <img src={slide1} className="w-full h-[300px] md:h-[400px] object-cover" alt="Main Promo" />
+            <img src={slide4} className="w-full h-[300px] md:h-[400px] object-cover" alt="Grocery Promo" />
+            <img src={slide5} className="w-full h-[300px] md:h-[400px] object-cover" alt="Banner" />
           </Slider>
         </div>
-        <div className="w-1/4">
-          <img src={slide2} className="w-full h-1/2" alt="" />
-          <img src={slide3} className="w-full h-1/2" alt="" />
+
+        {/* Side Banners Section */}
+        <div className="w-full md:w-1/4 flex flex-col">
+          <img src={slide2} className="w-full h-[150px] md:h-[200px] object-cover" alt="Side Banner 1" />
+          <img src={slide3} className="w-full h-[150px] md:h-[200px] object-cover" alt="Side Banner 2" />
         </div>
       </div>
-    </>
+    </div>
   );
 }

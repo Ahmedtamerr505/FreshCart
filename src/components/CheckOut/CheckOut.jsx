@@ -1,125 +1,127 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import { CartContext } from '../../Context/CartContext';
+import toast from 'react-hot-toast';
 
 export default function CheckOut() {
-  let { checkoutCart } = useContext(CartContext);
+  const { checkoutCart, getLoggedCart } = useContext(CartContext);
+  const [isLoading, setIsLoading] = useState(false);
 
-  let formik = useFormik({
-    initialValues: {
-      phone: "",
-      details: "",
-      city: "",
-    },
-    validate: (values) => {
-      const errors = {};
-      if (!values.phone) {
-        errors.phone = "Phone number is required";
-      } else if (!/^\d{10}$/.test(values.phone)) {
-        errors.phone = "Phone number must be 10 digits";
-      }
-      if (!values.details) {
-        errors.details = "Details are required";
-      }
-      if (!values.city) {
-        errors.city = "City is required";
-      }
-      return errors;
-    },
-    onSubmit: () => {
-      handleCheckout('66b10e95ed0dc0016c0293a0', 'http://localhost:5173'); // Replace with dynamic values
-    },
+  // Validation for shipping fields
+  const validationSchema = Yup.object({
+    details: Yup.string().required("Shipping details are required"),
+    city: Yup.string().required("City is required"),
+    phone: Yup.string()
+      .matches(/^(010|011|012|015)[0-9]{8}$/, "Invalid Egyptian phone number")
+      .required("Phone number is required"),
   });
 
-  async function handleCheckout(cartId, url) {
-    try {
-      console.log('Submitting checkout request...');
-      let resppo = await checkoutCart(cartId, url, formik.values);
-      console.log('Response:', resppo);
+  const formik = useFormik({
+    initialValues: { phone: "", details: "", city: "" },
+    validationSchema,
+    onSubmit: (values) => handleCheckout(values),
+  });
 
-      if (resppo.data.status === 'success') {
-        console.log('Redirecting to:', resppo.data.session.url);
-        window.location.href = resppo.data.session.url; // Redirect to payment page
+  async function handleCheckout(values) {
+    setIsLoading(true);
+    try {
+      // 1. Get the latest cart to retrieve the correct dynamic cartId
+      const cartRes = await getLoggedCart();
+      const activeCartId = cartRes?.data?.data?._id;
+
+      if (!activeCartId) {
+        toast.error("No active cart found.");
+        setIsLoading(false);
+        return;
+      }
+
+      // 2. Call checkout service
+      const res = await checkoutCart(activeCartId, window.location.origin, values);
+
+      // 3. Redirect to Stripe payment session if successful
+      if (res?.data?.status === 'success') {
+        window.location.href = res.data.session.url;
       } else {
-        console.error('Checkout failed:', resppo.data.message);
-        alert('Checkout failed. Please try again.');
+        toast.error("Checkout failed. Please try again.");
       }
     } catch (error) {
-      console.error('Checkout failed:', error);
-      alert('An error occurred during checkout. Please try again.');
+      toast.error("An error occurred during checkout.");
+    } finally {
+      setIsLoading(false);
     }
   }
 
   return (
-    <>
-      <h1 className="p-4 text-2xl text-emerald-600 font-bold">Pay Now</h1>
-      <form onSubmit={formik.handleSubmit} className="max-w-7xl mx-auto relative">
-        <div className="mb-5 relative mt-10">
-          <input
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
-            value={formik.values.details}
-            name="details"
-            type="text"
-            id="details"
-            className="shadow-sm bg-gray-50 border border-emerald-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-emerald-600 dark:placeholder-gray-400 dark:focus:ring-emerald-500 dark:focus:border-emerald-500 dark:shadow-sm-light"
-            required
-          />
-          <label
-            htmlFor="details"
-            className="block py-2 absolute bottom-9 left-0 mb-2 text-sm font-medium text-gray-900"
-          >
-            Enter your details:
-          </label>
-        </div>
+    <div className="container mx-auto px-4 py-16">
+      <div className="max-w-xl mx-auto bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
+        <h1 className="text-3xl font-bold text-emerald-600 mb-8 text-center">Shipping & Checkout</h1>
+        
+        <form onSubmit={formik.handleSubmit} className="space-y-6">
+          {/* Shipping Details */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Shipping Details</label>
+            <input
+              name="details"
+              type="text"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.details}
+              className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none transition"
+              placeholder="Building, Street, Apartment"
+            />
+            {formik.touched.details && formik.errors.details && (
+              <p className="text-red-500 text-xs mt-1">{formik.errors.details}</p>
+            )}
+          </div>
 
-        <div className="mb-5 relative mt-10">
-          <label
-            htmlFor="city"
-            className="block py-2 absolute bottom-9 left-0 mb-2 text-sm font-medium text-gray-900"
-          >
-            Enter your city:
-          </label>
-          <input
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
-            value={formik.values.city}
-            name="city"
-            type="text"
-            id="city"
-            className="shadow-sm bg-gray-50 border border-emerald-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-emerald-600 dark:placeholder-gray-400 dark:focus:ring-emerald-500 dark:focus:border-emerald-500 dark:shadow-sm-light"
-            required
-          />
-        </div>
+          {/* City */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">City</label>
+            <input
+              name="city"
+              type="text"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.city}
+              className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none transition"
+              placeholder="Your City"
+            />
+            {formik.touched.city && formik.errors.city && (
+              <p className="text-red-500 text-xs mt-1">{formik.errors.city}</p>
+            )}
+          </div>
 
-        <div className="mb-5 relative mt-10">
-          <label
-            htmlFor="phone"
-            className="block py-2 absolute bottom-9 left-0 mb-2 text-sm font-medium text-gray-900"
-          >
-            Your Phone:
-          </label>
-          <input
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
-            value={formik.values.phone}
-            name="phone"
-            type="tel"
-            id="phone"
-            className="shadow-sm bg-gray-50 border border-emerald-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-emerald-600 dark:placeholder-gray-400 dark:focus:ring-emerald-500 dark:focus:border-emerald-500 dark:shadow-sm-light"
-            required
-          />
-        </div>
+          {/* Phone */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
+            <input
+              name="phone"
+              type="tel"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.phone}
+              className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none transition"
+              placeholder="010XXXXXXXX"
+            />
+            {formik.touched.phone && formik.errors.phone && (
+              <p className="text-red-500 text-xs mt-1">{formik.errors.phone}</p>
+            )}
+          </div>
 
-        <div>
           <button
             type="submit"
-            className="text-white bg-emerald-800 hover:bg-emerald-600 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm w-full sm:w-auto px-7 py-2.5 text-center"
+            disabled={isLoading}
+            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl transition-all disabled:bg-emerald-300"
           >
-            Check out
+            {isLoading ? (
+              <span><i className="fas fa-spinner fa-spin mr-2"></i> Processing...</span>
+            ) : (
+              "Proceed to Payment"
+            )}
           </button>
-        </div>
-      </form>
-    </>
+        </form>
+      </div>
+    </div>
   );
 }

@@ -1,119 +1,87 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { ClipLoader } from 'react-spinners';
 
-export default function RecentCategories() {
+const RecentCategories = () => {
   const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [categoryItems, setCategoryItems] = useState([]);
-
-  // Fetch categories from the API
-  function getCategory() {
-    axios
-      .get(`https://ecommerce.routemisr.com/api/v1/categories`)
-      .then((res) => {
-        setCategories(res.data.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching categories:', error);
-      });
-  }
-
-  // Fetch items for the selected category
-  function fetchCategoryItems(categoryId) {
-    axios
-      .get(`https://ecommerce.routemisr.com/api/v1/categories/${categoryId}/items`)
-      .then((res) => {
-        setCategoryItems(res.data.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching category items:', error);
-      });
-  }
-
-  // Handle category click
-  function handleCategoryClick(category) {
-    setSelectedCategory(category);
-    fetchCategoryItems(category.id); // Fetch items for the selected category
-  }
+  const [subCategories, setSubCategories] = useState([]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+  const [chosenCategoryName, setChosenCategoryName] = useState('');
+  const [loadingCategories, setLoadingCategories] = useState(true);
+  const [loadingSubCategories, setLoadingSubCategories] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    getCategory();
+    async function fetchCategories() {
+      try {
+        const { data } = await axios.get('https://ecommerce.routemisr.com/api/v1/categories');
+        setCategories(data.data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoadingCategories(false);
+      }
+    }
+    fetchCategories();
   }, []);
 
+  const handleCategoryClick = async (categoryId) => {
+    setSelectedCategoryId(categoryId);
+    const chosen = categories.find(c => c._id === categoryId);
+    setChosenCategoryName(chosen ? chosen.name : '');
+    setLoadingSubCategories(true);
+    try {
+      const { data } = await axios.get(`https://ecommerce.routemisr.com/api/v1/subcategories?category=${categoryId}`);
+      setSubCategories(data.data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoadingSubCategories(false);
+    }
+  };
+
   return (
-    <>
-      <h1 className="mt-5 text-3xl text-emerald-500 font-bold mb-7">All Categories</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4">
-        {categories.length > 0 ? (
-          categories.map((category) => (
+    <div className="container mx-auto px-4 py-10 mt-20">
+      {loadingCategories ? (
+        <div className="flex justify-center py-20"><ClipLoader color="#4fa74f" /></div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {categories.map((category) => (
             <div
-              key={category.id}
-              onClick={() => handleCategoryClick(category)}
-              className="bg-white shadow-lg rounded-lg overflow-hidden cursor-pointer transform transition duration-300 hover:scale-105 hover:shadow-emerald-500/50 border border-gray-200"
+              key={category._id}
+              className="group border border-gray-200 rounded-2xl p-2 cursor-pointer hover:shadow-xl hover:shadow-[#4fa74f]/30 transition-all"
+              onClick={() => handleCategoryClick(category._id)}
             >
-              <div className="p-4">
-                <img
-                  src={category.image}
-                  alt={category.name}
-                  className="h-48 w-full object-cover rounded-md"
-                />
-                <h3 className="text-lg font-semibold text-gray-800 hover:text-emerald-500 transition duration-200 text-center mt-4">
-                  {category.name}
-                </h3>
-              </div>
+              <img src={category.image} className="w-full h-64 object-cover rounded-xl" alt={category.name} />
+              <h3 className="text-center text-xl font-bold py-4 text-[#4fa74f]">{category.name}</h3>
             </div>
-          ))
-        ) : (
-          <div className="flex justify-center items-center col-span-full">
-            <div className="sk-chase">
-              <div className="sk-chase-dot"></div>
-              <div className="sk-chase-dot"></div>
-              <div className="sk-chase-dot"></div>
-              <div className="sk-chase-dot"></div>
-              <div className="sk-chase-dot"></div>
-              <div className="sk-chase-dot"></div>
-            </div>
-          </div>
-        )}
-      </div>
+          ))}
+        </div>
+      )}
 
-      {/* Render selected category details */}
-      {selectedCategory && (
-        <div className="mt-12 p-6 rounded-lg shadow-lg bg-gradient-to-r from-emerald-100 to-white">
-          <h2 className="text-4xl font-bold text-emerald-600 text-center mb-6">
-            {selectedCategory.name}
-          </h2>
-          <div className="flex justify-center">
-            <img
-              src={selectedCategory.image}
-              alt={selectedCategory.name}
-              className="h-60 w-60 object-cover rounded-lg shadow-md border-4 border-emerald-500"
-            />
-          </div>
-          <p className="text-center mt-6 text-gray-700 text-lg">
-            Discover the amazing items in the <strong>{selectedCategory.name}</strong> category.
-          </p>
-
-          {/* Render items in the selected category */}
-          {categoryItems.length > 0 ? (
-            <div className="mt-8">
-              <h3 className="text-2xl font-bold text-gray-700 text-center mb-4">Items in this Category:</h3>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 px-4">
-                {categoryItems.map((item) => (
-                  <li
-                    key={item.id}
-                    className="bg-white shadow-md rounded-lg p-4 text-center text-gray-800 hover:bg-emerald-50 transition duration-200"
-                  >
-                    {item.name}
-                  </li>
-                ))}
-              </ul>
-            </div>
+      {selectedCategoryId && (
+        <div className="mt-16 text-center">
+          <h2 className="text-3xl font-bold mb-8 text-[#4fa74f]">{chosenCategoryName} Subcategories</h2>
+          {loadingSubCategories ? (
+            <div className="flex justify-center py-10"><ClipLoader color="#4fa74f" /></div>
           ) : (
-            <p className="text-center mt-6 text-gray-600">No items found in this category.</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+              {subCategories.map((sub) => (
+                <div
+                  key={sub._id}
+                  className="p-6 border border-gray-200 rounded-xl cursor-pointer hover:border-[#4fa74f] hover:bg-green-50 transition"
+                  onClick={() => navigate(`/products?subcategory=${sub._id}`)}
+                >
+                  <h3 className="text-lg font-semibold">{sub.name}</h3>
+                </div>
+              ))}
+            </div>
           )}
         </div>
       )}
-    </>
+    </div>
   );
-}
+};
+
+export default RecentCategories;

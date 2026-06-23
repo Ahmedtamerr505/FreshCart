@@ -31,7 +31,7 @@ let x = createBrowserRouter([
       { path: 'brands', element: <ProtectedRoute><Brands /></ProtectedRoute> },
       { path: 'wishlist', element: <ProtectedRoute><WishList /></ProtectedRoute> },
       { path: 'checkout', element: <ProtectedRoute><CheckOut /></ProtectedRoute> },
-      { path: 'productdetails/:id', element: <ProtectedRoute><ProductDetails /></ProtectedRoute> }, // Ensure this matches the Link in Products.jsx
+      { path: 'productdetails/:id', element: <ProtectedRoute><ProductDetails /></ProtectedRoute> }, 
       { path: 'register', element: <Register /> },
       { path: 'login', element: <Login /> },
       { path: 'categories', element: <ProtectedRoute><Categories /></ProtectedRoute> },
